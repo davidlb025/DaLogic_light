@@ -246,6 +246,7 @@
     event.preventDefault(); canvas.focus(); canvas.setPointerCapture(event.pointerId);
     const at = local(event); pointers.set(event.pointerId, at); pointerPosition = at;
     if (pointers.size === 2) {
+      releaseButton();
       if (interaction?.kind === 'drag') {doc = JSON.parse(interaction.before); finish();}
       const [a, b] = [...pointers.values()], mid = {x: (a.x + b.x) / 2, y: (a.y + b.y) / 2};
       pinch = {distance: Math.max(1, Math.hypot(a.x - b.x, a.y - b.y)), z: camera.z, anchor: world(mid)}; interaction = null; return;
@@ -257,12 +258,12 @@
     if (pin) {wireTo(pin); return;}
     if (drawing) {if (drawing.points.length >= 128) {notice('Un cable admite hasta 128 codos.'); return;} drawing.points.push({x: snap(p.x), y: snap(p.y)}); repaint(); return;}
     const n = hitNode(p);
-    if (n?.type === 'BOTON' && !event.shiftKey) {select(n.id); pressButton(n.id); return;}
     if (n) {
       if (event.shiftKey && selected.has(n.id)) {selected.delete(n.id); updateInterface(); repaint(); return;}
       if (!selected.has(n.id)) select(n.id, event.shiftKey); else {selectedWire = null; updateInterface();}
       interaction = {kind: 'drag', at, before: JSON.stringify(doc), clicked: n.id, moved: false,
         origins: doc.nodes.filter(item => selected.has(item.id)).map(item => ({id: item.id, x: item.x, y: item.y}))};
+      if (n.type === 'BOTON' && !event.shiftKey && selected.size === 1) pressButton(n.id);
     } else {
       const wire = hitWire(p);
       if (wire) {selected.clear(); selectedWire = wire.id; updateInterface(); repaint(); status('Cable seleccionado · Supr para eliminar'); return;}
@@ -281,7 +282,7 @@
     if (interaction?.kind === 'pan') {camera.x = interaction.x + at.x - interaction.at.x; camera.y = interaction.y + at.y - interaction.at.y; repaint(); return;}
     if (interaction?.kind === 'drag') {
       const dx = at.x - interaction.at.x, dy = at.y - interaction.at.y;
-      if (Math.hypot(dx, dy) > 4) interaction.moved = true;
+      if (!interaction.moved && Math.hypot(dx, dy) > 4) {interaction.moved = true; releaseButton();}
       if (interaction.moved) for (const origin of interaction.origins) {const n = network.byId.get(origin.id); n.x = snap(origin.x + dx / camera.z); n.y = snap(origin.y + dy / camera.z);}
       repaint(); return;
     }

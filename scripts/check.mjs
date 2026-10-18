@@ -1,3 +1,4 @@
+import {checkInteractions} from './check-interactions.mjs';
 import assert from 'node:assert/strict';
 import {readFile, access} from 'node:fs/promises';
 import {createRequire} from 'node:module';
@@ -5,6 +6,8 @@ import {runInNewContext} from 'node:vm';
 import {execFileSync} from 'node:child_process';
 import {join, dirname, resolve, relative, isAbsolute} from 'node:path';
 import {root, version, sourceEntries, filesUnder} from './project.mjs';
+
+await checkInteractions(root);
 
 const files = await filesUnder(sourceEntries);
 for (const file of files.filter(file => /\.(?:m?js)$/.test(file))) {
