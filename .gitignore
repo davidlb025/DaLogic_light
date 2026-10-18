@@ -1,0 +1,32 @@
+# Generated release files
+dist/
+node_modules/
+coverage/
+.cache/
+playwright-report/
+test-results/
+
+# Local servers, environments and logs
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.log
+*.tmp
+*.bak
+
+# Local configuration and credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+.idea/
+.vscode/
+
+# Operating system files
+.DS_Store
+Thumbs.db
+Desktop.ini

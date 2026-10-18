@@ -1,0 +1,142 @@
+{
+  "format": "DaLogic",
+  "version": 1,
+  "edition": "Light",
+  "name": "Puerta AND",
+  "components": [
+    {
+      "id": 0,
+      "type": "INTERRUPTOR",
+      "position": [
+        40,
+        40
+      ],
+      "label": "A",
+      "inputs": 0,
+      "outputs": 1,
+      "rotation": 0,
+      "mirrored": false,
+      "state": false,
+      "delay_ms": 0,
+      "delay_gates": 0,
+      "logic_inputs": [],
+      "logic_outputs": [
+        false
+      ]
+    },
+    {
+      "id": 1,
+      "type": "INTERRUPTOR",
+      "position": [
+        40,
+        220
+      ],
+      "label": "B",
+      "inputs": 0,
+      "outputs": 1,
+      "rotation": 0,
+      "mirrored": false,
+      "state": false,
+      "delay_ms": 0,
+      "delay_gates": 0,
+      "logic_inputs": [],
+      "logic_outputs": [
+        false
+      ]
+    },
+    {
+      "id": 2,
+      "type": "AND",
+      "position": [
+        340,
+        130
+      ],
+      "label": "",
+      "inputs": 2,
+      "outputs": 1,
+      "rotation": 0,
+      "mirrored": false,
+      "state": false,
+      "delay_ms": 0,
+      "delay_gates": 0,
+      "logic_inputs": [
+        false,
+        false
+      ],
+      "logic_outputs": [
+        false
+      ]
+    },
+    {
+      "id": 3,
+      "type": "BOMBILLA",
+      "position": [
+        640,
+        130
+      ],
+      "label": "Salida",
+      "inputs": 1,
+      "outputs": 0,
+      "rotation": 0,
+      "mirrored": false,
+      "state": false,
+      "delay_ms": 0,
+      "delay_gates": 0,
+      "logic_inputs": [
+        false
+      ],
+      "logic_outputs": []
+    }
+  ],
+  "wires": [
+    {
+      "src": {
+        "kind": "port",
+        "widget": 0,
+        "side": "out",
+        "index": 0
+      },
+      "dst": {
+        "kind": "port",
+        "widget": 2,
+        "side": "in",
+        "index": 0
+      },
+      "midpoints": []
+    },
+    {
+      "src": {
+        "kind": "port",
+        "widget": 1,
+        "side": "out",
+        "index": 0
+      },
+      "dst": {
+        "kind": "port",
+        "widget": 2,
+        "side": "in",
+        "index": 1
+      },
+      "midpoints": []
+    },
+    {
+      "src": {
+        "kind": "port",
+        "widget": 2,
+        "side": "out",
+        "index": 0
+      },
+      "dst": {
+        "kind": "port",
+        "widget": 3,
+        "side": "in",
+        "index": 0
+      },
+      "midpoints": []
+    }
+  ],
+  "junctions": [],
+  "endpoints": [],
+  "visuals": [],
+  "sections": []
+}

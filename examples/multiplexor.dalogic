@@ -1,0 +1,285 @@
+{
+  "format": "DaLogic",
+  "version": 1,
+  "edition": "Light",
+  "name": "Multiplexor 2 a 1",
+  "components": [
+    {
+      "id": 0,
+      "type": "INTERRUPTOR",
+      "position": [
+        40,
+        40
+      ],
+      "label": "D0",
+      "inputs": 0,
+      "outputs": 1,
+      "rotation": 0,
+      "mirrored": false,
+      "state": false,
+      "delay_ms": 0,
+      "delay_gates": 0,
+      "logic_inputs": [],
+      "logic_outputs": [
+        false
+      ]
+    },
+    {
+      "id": 1,
+      "type": "INTERRUPTOR",
+      "position": [
+        40,
+        200
+      ],
+      "label": "D1",
+      "inputs": 0,
+      "outputs": 1,
+      "rotation": 0,
+      "mirrored": false,
+      "state": false,
+      "delay_ms": 0,
+      "delay_gates": 0,
+      "logic_inputs": [],
+      "logic_outputs": [
+        false
+      ]
+    },
+    {
+      "id": 2,
+      "type": "INTERRUPTOR",
+      "position": [
+        40,
+        360
+      ],
+      "label": "SEL",
+      "inputs": 0,
+      "outputs": 1,
+      "rotation": 0,
+      "mirrored": false,
+      "state": false,
+      "delay_ms": 0,
+      "delay_gates": 0,
+      "logic_inputs": [],
+      "logic_outputs": [
+        false
+      ]
+    },
+    {
+      "id": 3,
+      "type": "MODULO",
+      "position": [
+        360,
+        160
+      ],
+      "label": "",
+      "inputs": 3,
+      "outputs": 1,
+      "rotation": 0,
+      "mirrored": false,
+      "state": false,
+      "delay_ms": 0,
+      "delay_gates": 0,
+      "name": "MUX 2 a 1",
+      "input_labels": [
+        "D0",
+        "D1",
+        "SEL"
+      ],
+      "output_labels": [
+        "Y"
+      ],
+      "input_numbers": [
+        0,
+        1,
+        2
+      ],
+      "output_numbers": [
+        0
+      ],
+      "truth_table": [
+        {
+          "inputs": [
+            false,
+            false,
+            false
+          ],
+          "outputs": [
+            false
+          ],
+          "time_ms": 0
+        },
+        {
+          "inputs": [
+            false,
+            false,
+            true
+          ],
+          "outputs": [
+            false
+          ],
+          "time_ms": 0
+        },
+        {
+          "inputs": [
+            false,
+            true,
+            false
+          ],
+          "outputs": [
+            false
+          ],
+          "time_ms": 0
+        },
+        {
+          "inputs": [
+            false,
+            true,
+            true
+          ],
+          "outputs": [
+            true
+          ],
+          "time_ms": 0
+        },
+        {
+          "inputs": [
+            true,
+            false,
+            false
+          ],
+          "outputs": [
+            true
+          ],
+          "time_ms": 0
+        },
+        {
+          "inputs": [
+            true,
+            false,
+            true
+          ],
+          "outputs": [
+            false
+          ],
+          "time_ms": 0
+        },
+        {
+          "inputs": [
+            true,
+            true,
+            false
+          ],
+          "outputs": [
+            true
+          ],
+          "time_ms": 0
+        },
+        {
+          "inputs": [
+            true,
+            true,
+            true
+          ],
+          "outputs": [
+            true
+          ],
+          "time_ms": 0
+        }
+      ],
+      "logic_inputs": [
+        false,
+        false,
+        false
+      ],
+      "logic_outputs": [
+        false
+      ]
+    },
+    {
+      "id": 4,
+      "type": "BOMBILLA",
+      "position": [
+        720,
+        160
+      ],
+      "label": "Y",
+      "inputs": 1,
+      "outputs": 0,
+      "rotation": 0,
+      "mirrored": false,
+      "state": false,
+      "delay_ms": 0,
+      "delay_gates": 0,
+      "logic_inputs": [
+        false
+      ],
+      "logic_outputs": []
+    }
+  ],
+  "wires": [
+    {
+      "src": {
+        "kind": "port",
+        "widget": 0,
+        "side": "out",
+        "index": 0
+      },
+      "dst": {
+        "kind": "port",
+        "widget": 3,
+        "side": "in",
+        "index": 0
+      },
+      "midpoints": []
+    },
+    {
+      "src": {
+        "kind": "port",
+        "widget": 1,
+        "side": "out",
+        "index": 0
+      },
+      "dst": {
+        "kind": "port",
+        "widget": 3,
+        "side": "in",
+        "index": 1
+      },
+      "midpoints": []
+    },
+    {
+      "src": {
+        "kind": "port",
+        "widget": 2,
+        "side": "out",
+        "index": 0
+      },
+      "dst": {
+        "kind": "port",
+        "widget": 3,
+        "side": "in",
+        "index": 2
+      },
+      "midpoints": []
+    },
+    {
+      "src": {
+        "kind": "port",
+        "widget": 3,
+        "side": "out",
+        "index": 0
+      },
+      "dst": {
+        "kind": "port",
+        "widget": 4,
+        "side": "in",
+        "index": 0
+      },
+      "midpoints": []
+    }
+  ],
+  "junctions": [],
+  "endpoints": [],
+  "visuals": [],
+  "sections": []
+}

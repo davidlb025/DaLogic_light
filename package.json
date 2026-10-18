@@ -1,0 +1,16 @@
+{
+  "name": "dalogic-light",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Editor y simulador ligero de circuitos lógicos combinacionales en el navegador.",
+  "author": "David Lopez Borrego",
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "check": "node scripts/check.mjs",
+    "build": "node scripts/build.mjs",
+    "package": "node scripts/package.mjs"
+  }
+}

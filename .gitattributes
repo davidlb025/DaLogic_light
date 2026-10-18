@@ -1,0 +1,14 @@
+* text=auto
+*.js text eol=lf
+*.mjs text eol=lf
+*.json text eol=lf
+*.html text eol=lf
+*.css text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.dalogic text eol=lf
+*.dmodule text eol=lf
+*.png binary
+*.ico binary
+*.zip binary

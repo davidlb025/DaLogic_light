@@ -1,0 +1,230 @@
+{
+  "format": "DaLogic",
+  "version": 1,
+  "edition": "Light",
+  "name": "Semisumador",
+  "components": [
+    {
+      "id": 0,
+      "type": "INTERRUPTOR",
+      "position": [
+        40,
+        80
+      ],
+      "label": "A",
+      "inputs": 0,
+      "outputs": 1,
+      "rotation": 0,
+      "mirrored": false,
+      "state": false,
+      "delay_ms": 0,
+      "delay_gates": 0,
+      "logic_inputs": [],
+      "logic_outputs": [
+        false
+      ]
+    },
+    {
+      "id": 1,
+      "type": "INTERRUPTOR",
+      "position": [
+        40,
+        300
+      ],
+      "label": "B",
+      "inputs": 0,
+      "outputs": 1,
+      "rotation": 0,
+      "mirrored": false,
+      "state": false,
+      "delay_ms": 0,
+      "delay_gates": 0,
+      "logic_inputs": [],
+      "logic_outputs": [
+        false
+      ]
+    },
+    {
+      "id": 2,
+      "type": "XOR",
+      "position": [
+        360,
+        80
+      ],
+      "label": "",
+      "inputs": 2,
+      "outputs": 1,
+      "rotation": 0,
+      "mirrored": false,
+      "state": false,
+      "delay_ms": 0,
+      "delay_gates": 0,
+      "logic_inputs": [
+        false,
+        false
+      ],
+      "logic_outputs": [
+        false
+      ]
+    },
+    {
+      "id": 3,
+      "type": "AND",
+      "position": [
+        360,
+        300
+      ],
+      "label": "",
+      "inputs": 2,
+      "outputs": 1,
+      "rotation": 0,
+      "mirrored": false,
+      "state": false,
+      "delay_ms": 0,
+      "delay_gates": 0,
+      "logic_inputs": [
+        false,
+        false
+      ],
+      "logic_outputs": [
+        false
+      ]
+    },
+    {
+      "id": 4,
+      "type": "BOMBILLA",
+      "position": [
+        680,
+        80
+      ],
+      "label": "S",
+      "inputs": 1,
+      "outputs": 0,
+      "rotation": 0,
+      "mirrored": false,
+      "state": false,
+      "delay_ms": 0,
+      "delay_gates": 0,
+      "logic_inputs": [
+        false
+      ],
+      "logic_outputs": []
+    },
+    {
+      "id": 5,
+      "type": "BOMBILLA",
+      "position": [
+        680,
+        300
+      ],
+      "label": "Cout",
+      "inputs": 1,
+      "outputs": 0,
+      "rotation": 0,
+      "mirrored": false,
+      "state": false,
+      "delay_ms": 0,
+      "delay_gates": 0,
+      "logic_inputs": [
+        false
+      ],
+      "logic_outputs": []
+    }
+  ],
+  "wires": [
+    {
+      "src": {
+        "kind": "port",
+        "widget": 0,
+        "side": "out",
+        "index": 0
+      },
+      "dst": {
+        "kind": "port",
+        "widget": 2,
+        "side": "in",
+        "index": 0
+      },
+      "midpoints": []
+    },
+    {
+      "src": {
+        "kind": "port",
+        "widget": 1,
+        "side": "out",
+        "index": 0
+      },
+      "dst": {
+        "kind": "port",
+        "widget": 2,
+        "side": "in",
+        "index": 1
+      },
+      "midpoints": []
+    },
+    {
+      "src": {
+        "kind": "port",
+        "widget": 0,
+        "side": "out",
+        "index": 0
+      },
+      "dst": {
+        "kind": "port",
+        "widget": 3,
+        "side": "in",
+        "index": 0
+      },
+      "midpoints": []
+    },
+    {
+      "src": {
+        "kind": "port",
+        "widget": 1,
+        "side": "out",
+        "index": 0
+      },
+      "dst": {
+        "kind": "port",
+        "widget": 3,
+        "side": "in",
+        "index": 1
+      },
+      "midpoints": []
+    },
+    {
+      "src": {
+        "kind": "port",
+        "widget": 2,
+        "side": "out",
+        "index": 0
+      },
+      "dst": {
+        "kind": "port",
+        "widget": 4,
+        "side": "in",
+        "index": 0
+      },
+      "midpoints": []
+    },
+    {
+      "src": {
+        "kind": "port",
+        "widget": 3,
+        "side": "out",
+        "index": 0
+      },
+      "dst": {
+        "kind": "port",
+        "widget": 5,
+        "side": "in",
+        "index": 0
+      },
+      "midpoints": []
+    }
+  ],
+  "junctions": [],
+  "endpoints": [],
+  "visuals": [],
+  "sections": []
+}

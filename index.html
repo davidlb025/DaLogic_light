@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f5f7fb">
+  <meta name="description" content="Editor y simulador ligero de circuitos lógicos. Puertas, CI combinacionales, diagnóstico y exportación directamente en tu navegador.">
+  <title>DaLogic Light +</title>
+  <link rel="icon" href="favicon.ico">
+  <link rel="stylesheet" href="styles.css">
+  <script src="core.js" defer></script>
+  <script src="library.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="titlebar">
+    <div class="brand"><img src="favicon.ico" alt="" width="27" height="27"><strong>DaLogic</strong><span class="edition">Light +</span></div>
+    <input id="project-name" aria-label="Nombre del circuito" value="Puerta AND" maxlength="100" autocomplete="off">
+    <a class="full-version" href="https://github.com/davidlb025/DaLogic" target="_blank" rel="noopener noreferrer"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M9 19c-4 1-4-2-6-2m12 5v-4a3.5 3.5 0 0 0-1-3c3-.4 6-1.5 6-6a5 5 0 0 0-1.3-3.5A4.7 4.7 0 0 0 18.6 2S17.4 1.6 15 3a13 13 0 0 0-6 0C6.6 1.6 5.4 2 5.4 2a4.7 4.7 0 0 0-.1 3.5A5 5 0 0 0 4 9c0 4.5 3 5.6 6 6a3.5 3.5 0 0 0-1 3v4"/></svg><span>DaLogic completo</span><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M7 17 17 7M7 7h10v10"/></svg></a>
+  </header>
+  <div class="toolbar" role="toolbar" aria-label="Herramientas del circuito">
+    <div class="tool-group">
+      <button id="new" data-icon="new" title="Nuevo circuito (Ctrl+N)">Nuevo</button>
+      <button id="open" data-icon="open" title="Abrir un archivo .dalogic (Ctrl+O)">Abrir</button>
+      <button id="save" data-icon="save" title="Descargar circuito (Ctrl+S)">Guardar</button>
+    </div>
+    <div class="tool-group">
+      <button id="undo" class="icon-button" data-icon="undo" title="Deshacer (Ctrl+Z)" aria-label="Deshacer" disabled></button>
+      <button id="redo" class="icon-button" data-icon="redo" title="Rehacer (Ctrl+Y)" aria-label="Rehacer" disabled></button>
+      <button id="delete" data-icon="delete" title="Eliminar selección (Supr)" disabled><span class="wide-label">Eliminar</span></button>
+    </div>
+    <div class="tool-group">
+      <button id="fit" data-icon="fit" title="Ajustar a circuito (Ctrl+0)"><span class="wide-label">Ajustar</span></button>
+      <button id="zoom-out" class="icon-button" data-icon="minus" aria-label="Alejar" title="Alejar"></button>
+      <span id="zoom-level" aria-live="off">100 %</span>
+      <button id="zoom-in" class="icon-button" data-icon="plus" aria-label="Acercar" title="Acercar"></button>
+    </div>
+    <div class="tool-group end-tools">
+      <details class="tools-menu"><summary>Herramientas</summary><div class="tools-popover">
+        <button id="diagnose">Revisar conexiones</button>
+        <button id="library-open">Biblioteca de CI</button>
+        <button id="module-import">Importar CI .dmodule</button>
+        <button id="module-create">Crear CI del circuito</button>
+        <hr><button id="copy-selection">Copiar selección</button><button id="paste-selection">Pegar</button><button id="duplicate-selection">Duplicar selección</button>
+        <button data-arrange="left">Alinear a la izquierda</button><button data-arrange="top">Alinear arriba</button>
+        <button data-arrange="horizontal">Distribuir horizontalmente</button><button data-arrange="vertical">Distribuir verticalmente</button>
+        <hr><button id="export-svg">Exportar SVG</button><button id="export-png">Exportar PNG</button>
+        <hr><label><input id="grid-visible" type="checkbox" checked> Mostrar rejilla</label><label><input id="grid-snap" type="checkbox" checked> Ajustar a rejilla</label>
+      </div></details>
+      <button id="truth" data-icon="table">Tabla de verdad</button>
+      <button id="theme" class="icon-button" data-icon="moon" aria-label="Cambiar a tema oscuro" title="Tema oscuro"></button>
+      <button id="help" class="icon-button" data-icon="help" aria-label="Ayuda" title="Ayuda (F1)"></button>
+    </div>
+  </div>
+  <main class="workspace">
+    <aside class="sidebar" aria-label="Componentes y selección">
+      <div class="sidebar-heading"><h1>Componentes</h1><span>Local</span></div>
+      <label class="palette-search" for="component-search">Buscar componente<input id="component-search" type="search" placeholder="Nombre o tipo" autocomplete="off"></label>
+      <div id="palette" class="palette">
+        <div class="palette-group" aria-label="Puertas lógicas">
+          <button class="component-button" data-type="AND" draggable="true"><svg viewBox="0 0 48 30" aria-hidden="true"><path d="M10 4h13a11 11 0 0 1 0 22H10Z M3 10h7m-7 10h7m24-5h10"/></svg><span>AND</span></button>
+          <button class="component-button" data-type="OR" draggable="true"><svg viewBox="0 0 48 30" aria-hidden="true"><path d="M8 4Q23 4 37 15 23 26 8 26Q17 15 8 4Zm-5 6h8m-8 10h8m26-5h8"/></svg><span>OR</span></button>
+          <button class="component-button" data-type="XOR" draggable="true"><svg viewBox="0 0 48 30" aria-hidden="true"><path d="M11 4Q26 4 39 15 26 26 11 26Q20 15 11 4ZM6 4q9 11 0 22M2 10h9M2 20h9m28-5h7"/></svg><span>XOR</span></button>
+          <button class="component-button" data-type="NOT" draggable="true"><svg viewBox="0 0 48 30" aria-hidden="true"><path d="m12 4 23 11-23 11ZM3 15h9m30 0h5"/><circle cx="38.5" cy="15" r="3.5"/></svg><span>NOT</span></button>
+          <button class="component-button" data-type="NAND" draggable="true"><svg viewBox="0 0 48 30" aria-hidden="true"><path d="M9 4h13a11 11 0 0 1 0 22H9ZM2 10h7m-7 10h7m31-5h7"/><circle cx="36.5" cy="15" r="3.5"/></svg><span>NAND</span></button>
+          <button class="component-button" data-type="NOR" draggable="true"><svg viewBox="0 0 48 30" aria-hidden="true"><path d="M7 4Q21 4 34 15 21 26 7 26Q16 15 7 4ZM2 10h8m-8 10h8m39-5h6"/><circle cx="37.5" cy="15" r="3.5"/></svg><span>NOR</span></button>
+        </div>
+        <div class="palette-divider"></div>
+        <details class="palette-section" open><summary>Entradas y salidas</summary><div class="palette-group" aria-label="Entradas y salidas">
+          <button class="component-button" data-type="INTERRUPTOR" draggable="true"><svg viewBox="0 0 48 30" aria-hidden="true"><path d="M2 21h9m5-2L33 9m5 12h8"/><circle cx="13" cy="21" r="3"/><circle cx="35" cy="21" r="3"/></svg><span>Interruptor</span><small>Entrada</small></button>
+          <button class="component-button" data-type="BOMBILLA" draggable="true"><svg viewBox="0 0 48 30" aria-hidden="true"><path d="M20 23h8m-8 4h8m-6-4v-6m4 6v-6M6 15h8"/><circle cx="24" cy="12" r="10"/></svg><span>Bombilla</span><small>Salida</small></button>
+        <button class="component-button" data-type="BOTON" draggable="true"><svg viewBox="0 0 48 30" aria-hidden="true"><path d="M8 22h32M16 22v-8h16v8M24 3v7m-8-7h16"/></svg><span>Pulsador</span></button>
+        <button class="component-button" data-type="CONSTANTE" draggable="true"><svg viewBox="0 0 48 30" aria-hidden="true"><path d="M9 5h25v20H9ZM34 15h10M18 10l4-2v14m-5 0h10"/></svg><span>Constante</span></button>
+        <button class="component-button" data-type="BUS_VISOR" draggable="true"><svg viewBox="0 0 48 30" aria-hidden="true"><path d="M2 15h8m28 0h8M10 5h28v20H10ZM19 9h10v12H19Z"/></svg><span>Visor de señal</span></button>
+        </div></details>
+        <details id="library-section" class="palette-section"><summary>Circuitos integrados <span id="library-count"></span></summary><div id="library-list" class="palette-group"></div><p id="library-empty" hidden>Sin coincidencias.</p></details>
+        <p id="search-empty" hidden>No hay componentes con ese nombre.</p>
+      </div>
+      <section id="selection-panel" class="selection-panel" hidden aria-label="Propiedades de la selección">
+        <h2 id="selection-title">Selección</h2>
+        <label for="selected-node">Componente</label><select id="selected-node" aria-label="Seleccionar componente"></select>
+        <label for="node-label">Nombre</label><input id="node-label" maxlength="80" autocomplete="off" placeholder="Sin etiqueta">
+        <div id="inputs-field"><label for="node-inputs">Entradas</label><input id="node-inputs" type="number" min="2" max="8" value="2"></div>
+        <label for="node-signal">Señal actual</label><output id="node-signal"></output>
+        <button id="toggle-switch" class="secondary" hidden>Cambiar estado</button>
+      </section>
+      <div class="sidebar-note"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 12h8m-4-4v8M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Z"/></svg><p>Elige un componente y pulsa el tablero para colocarlo.</p></div>
+    </aside>
+    <section class="board-area" aria-label="Tablero de circuitos">
+      <canvas id="board" tabindex="0" role="application" aria-label="Editor de circuitos. Selecciona una herramienta y pulsa Enter para colocarla. Usa las flechas para mover la selección y Supr para borrarla."></canvas>
+      <div id="empty-state" class="empty-state" hidden><h2>Tu próximo circuito empieza aquí.</h2><p>Añade un interruptor, una puerta y una bombilla.</p><button id="load-example">Cargar ejemplo AND</button></div>
+      <button id="cancel-drawing" class="cancel-drawing" hidden>Cancelar conexión · Esc</button>
+    </section>
+  </main>
+  <footer class="statusbar"><span id="status" role="status">Listo</span><div><span id="counts">4 componentes · 3 cables</span><span class="status-divider"></span><span id="storage-status">Guardado en este navegador</span></div></footer>
+  <input id="file-input" type="file" accept=".dalogic,.json" hidden>
+  <div id="toast" role="status" hidden></div>
+  <dialog id="help-dialog"><div class="dialog-title"><h2>Lo básico, a mano.</h2><button class="close-dialog icon-button" data-icon="close" aria-label="Cerrar ayuda"></button></div>
+    <p>Diseña y prueba pequeños circuitos lógicos directamente en el navegador.</p>
+    <dl class="help-list"><dt>Añadir</dt><dd>Elige un componente y pulsa el tablero. También puedes arrastrarlo desde la lista.</dd><dt>Conectar</dt><dd>Pulsa una salida y una entrada. Puedes añadir codos con clics en el tablero. Esc cancela.</dd><dt>Simular</dt><dd>Pulsa un interruptor para alternar 0 y 1. La bombilla muestra la salida. X indica una señal indeterminada.</dd><dt>Mover y seleccionar</dt><dd>Arrastra componentes. Arrastra en el fondo para seleccionar varios; usa Mayús para añadir a la selección.</dd><dt>Navegar</dt><dd>Rueda para zoom. Espacio + arrastre o botón central para desplazar. En una pantalla táctil, arrastra el fondo o usa dos dedos para zoom.</dd></dl>
+    <div class="shortcut-grid"><span>Deshacer / rehacer</span><kbd>Ctrl Z / Ctrl Y</kbd><span>Guardar / abrir</span><kbd>Ctrl S / Ctrl O</kbd><span>Duplicar / eliminar</span><kbd>Ctrl D / Supr</kbd><span>Seleccionar todo / ajustar</span><kbd>Ctrl A / Ctrl 0</kbd></div>
+    <p class="help-footer">Light + añade pulsadores, constantes de un bit, visores y CI combinacionales. Mantén pulsado un pulsador para activar su salida; también puedes usar el botón del inspector o la tecla Espacio con el pulsador seleccionado. El menú Herramientas incluye diagnóstico, alineación, exportación e importación/creación de CI. Para memoria, buses y realimentación, abre <a href="https://github.com/davidlb025/DaLogic" target="_blank" rel="noopener noreferrer">DaLogic completo</a>.</p>
+  </dialog>
+  <input id="module-file-input" type="file" accept=".dmodule,.json" hidden>
+  <dialog id="diagnostics-dialog" aria-labelledby="diagnostics-title"><div class="dialog-title"><h2 id="diagnostics-title">Revisión del circuito</h2><button class="close-dialog icon-button" data-icon="close" aria-label="Cerrar revisión"></button></div><p id="diagnostics-summary"></p><div id="diagnostics-list"></div></dialog>
+  <dialog id="module-dialog" aria-labelledby="module-title"><div class="dialog-title"><h2 id="module-title">Crear circuito integrado</h2><button class="close-dialog icon-button" data-icon="close" aria-label="Cerrar creación de CI"></button></div><p>Los interruptores y pulsadores serán entradas; las bombillas y visores serán salidas. El CI incluye la tabla de verdad del circuito actual. Hasta 8 entradas y 8 salidas.</p><label for="module-name">Nombre del CI</label><input id="module-name" maxlength="60" autocomplete="off"><p id="module-error" role="status"></p><div class="dialog-actions"><button id="module-download">Descargar .dmodule</button><button id="module-add-library" class="primary">Añadir a biblioteca</button></div></dialog>
+  <dialog id="truth-dialog"><div class="dialog-title"><h2>Tabla de verdad</h2><button class="close-dialog icon-button" data-icon="close" aria-label="Cerrar tabla"></button></div><p id="truth-summary"></p><div class="table-scroll"><table id="truth-table"></table></div><div class="dialog-actions"><button id="export-csv" data-icon="save">Descargar CSV</button></div></dialog>
+  <dialog id="confirm-dialog"><div class="dialog-title"><h2>Descartar los cambios</h2></div><p>Hay cambios que aún no has descargado. Guarda el circuito si quieres conservar un archivo antes de continuar.</p><div class="dialog-actions"><button id="confirm-cancel">Cancelar</button><button id="confirm-save">Guardar y continuar</button><button id="confirm-discard" class="primary">Continuar sin guardar</button></div></dialog>
+</body>
+</html>
